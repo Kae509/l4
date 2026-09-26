@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f6f2">
+  <title>Conversation — Cercle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="index.html" aria-label="Cercle, boîte de réception">
+        <span class="brand-icon" aria-hidden="true">c</span><span>cercle<span class="brand-dot">.</span></span>
+      </a>
+      <div class="workspace-label">ESPACE PERSONNEL</div>
+      <nav class="side-nav" aria-label="Navigation principale">
+        <a class="nav-link active" href="index.html"><span class="nav-icon" aria-hidden="true">▤</span>Messages<span class="nav-count">4</span></a>
+        <a class="nav-link" href="conversation.html?contact=lea"><span class="nav-icon" aria-hidden="true">◷</span>Récents</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="profile-avatar">AL</div>
+        <div class="profile-info"><strong>Alex Laurent</strong><span>Disponible</span></div>
+        <button class="more-button" type="button" aria-label="Plus d’options">···</button>
+      </div>
+    </aside>
+
+    <main class="main-area conversation-area">
+      <header class="topbar">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Boîte de réception</a>
+        <div class="topbar-actions"><span class="sync-status"><i></i> Tout est à jour</span><button class="icon-button" type="button" aria-label="Notifications">♧<span class="notification-dot"></span></button></div>
+      </header>
+
+      <section class="chat-panel" aria-label="Conversation">
+        <header class="chat-header">
+          <div class="chat-person"><span class="avatar avatar-mara" id="contact-avatar">MC</span><div><h1 id="contact-name">Mara Chen</h1><p><span class="presence"></span><span id="contact-status">En ligne</span></p></div></div>
+          <div class="chat-header-actions"><button class="icon-button" type="button" aria-label="Rechercher dans la conversation">⌕</button><button class="icon-button" type="button" aria-label="Plus d’options">···</button></div>
+        </header>
+
+        <div class="message-stream" id="message-stream" aria-live="polite" aria-relevant="additions text">
+          <div class="day-divider"><span>Aujourd’hui</span></div>
+          <div class="message-group received-group">
+            <span class="mini-avatar avatar-mara" id="message-avatar">MC</span>
+            <div><div class="message-meta"><strong id="message-sender">Mara</strong><time>10:36</time></div><div class="bubble received">Hello Alex ! J’ai enfin visité le nouvel espace rue des Archives.</div><div class="bubble received">On devrait vraiment y organiser notre prochaine rencontre ✨</div></div>
+          </div>
+          <div class="message-group sent-group"><div><div class="message-meta sent-meta"><time>10:39</time><strong>Vous</strong></div><div class="bubble sent">Oh oui, je voulais justement le voir ! L’espace est comment ?</div></div></div>
+          <div class="message-group received-group">
+            <span class="mini-avatar avatar-mara">MC</span>
+            <div><div class="message-meta"><strong id="message-sender-two">Mara</strong><time>10:42</time></div><div class="bubble received">Tu as vu le nouveau studio ? La lumière est incroyable.</div></div>
+          </div>
+        </div>
+
+        <form class="composer" id="message-form">
+          <label class="sr-only" for="message-input">Écrire un message</label>
+          <textarea id="message-input" rows="1" maxlength="1000" placeholder="Écrire un message…"></textarea>
+          <div class="composer-footer"><div class="composer-tools"><button class="tool-button" type="button" aria-label="Ajouter une pièce jointe" title="Ajouter une pièce jointe">＋</button><span>Entrée pour envoyer · Maj + Entrée pour aller à la ligne</span></div><button class="send-button" type="submit" aria-label="Envoyer le message">Envoyer <span aria-hidden="true">↑</span></button></div>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
