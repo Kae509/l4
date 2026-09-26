@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#173c32">
+  <meta name="description" content="Rencontrez les chiens du refuge Les Jours Heureux et trouvez votre compagnon de vie.">
+  <title>Les Jours Heureux — adoption canine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --forest: #173c32;
+      --forest-light: #285446;
+      --paper: #f5f1e8;
+      --white: #fffdf8;
+      --coral: #e96e52;
+      --yellow: #f2c866;
+      --ink: #202b25;
+      --muted: #6e766f;
+      --line: #e4dfd4;
+      --serif: "Playfair Display", Georgia, serif;
+      --sans: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+    button, a { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+
+    .topbar {
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 26px clamp(22px, 6vw, 88px);
+      color: white;
+    }
+    .brand { display: inline-flex; align-items: center; gap: 11px; color: inherit; text-decoration: none; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid #ffffff80; border-radius: 50%; font-size: 20px; }
+    .brand-name { font-size: 14px; font-weight: 700; letter-spacing: .03em; }
+    .open-status { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 600; }
+    .open-status::before { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); content: ""; }
+
+    .hero {
+      position: relative;
+      display: flex;
+      min-height: min(730px, 92vh);
+      align-items: center;
+      overflow: hidden;
+      padding: 130px clamp(22px, 11vw, 160px) 90px;
+      background: #213e33 url("https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=2200&q=85") center 43% / cover no-repeat;
+      color: white;
+    }
+    .hero::before { position: absolute; inset: 0; background: linear-gradient(90deg, #102c25e8 0%, #102c25b8 42%, #102c2530 100%); content: ""; }
+    .hero-content { position: relative; z-index: 1; width: min(590px, 100%); animation: arrive .7s ease both; }
+    .eyebrow { margin: 0 0 20px; color: var(--yellow); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    .hero h1 { max-width: 570px; margin-bottom: 20px; font: 600 clamp(46px, 6vw, 76px)/1.04 var(--serif); }
+    .hero-copy { max-width: 430px; margin-bottom: 32px; color: #ffffffd9; font-size: 16px; line-height: 1.75; }
+    .button { display: inline-flex; min-height: 50px; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 3px; padding: 0 21px; background: var(--coral); color: white; cursor: pointer; font-size: 13px; font-weight: 700; text-decoration: none; transition: background .2s, transform .2s; }
+    .button:hover { transform: translateY(-2px); background: #d85e44; }
+    .hero-note { display: inline-flex; align-items: center; gap: 10px; margin-left: 18px; color: #ffffffd9; font-size: 12px; }
+    .hero-note span { color: var(--yellow); font-size: 18px; }
+
+    .intro { display: grid; grid-template-columns: 1fr 1.2fr; gap: 50px; align-items: end; padding: 95px clamp(22px, 11vw, 160px) 62px; }
+    .intro .eyebrow { margin-bottom: 13px; color: var(--coral); }
+    .intro h2 { max-width: 390px; margin-bottom: 0; font: 600 clamp(33px, 4vw, 48px)/1.12 var(--serif); }
+    .intro-copy { max-width: 500px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
+
+    .dogs { padding: 18px clamp(22px, 11vw, 160px) 105px; }
+    .dogs-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 28px; border-bottom: 1px solid var(--line); padding-bottom: 17px; }
+    .dogs-toolbar h2 { margin: 0; font: 600 24px var(--serif); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter { min-height: 34px; border: 1px solid transparent; border-radius: 2px; padding: 0 12px; background: transparent; color: var(--muted); cursor: pointer; font-size: 12px; transition: .2s; }
+    .filter:hover { border-color: var(--line); color: var(--ink); }
+    .filter[aria-pressed="true"] { border-color: var(--forest); background: var(--forest); color: white; }
+    .dog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+    .dog-card { overflow: hidden; background: var(--white); animation: arrive .45s ease both; }
+    .dog-card[hidden] { display: none; }
+    .dog-image-wrap { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #d8d5ca; }
+    .dog-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+    .dog-card:hover .dog-image { transform: scale(1.035); }
+    .dog-tag { position: absolute; top: 13px; left: 13px; border-radius: 2px; padding: 7px 10px; background: var(--yellow); color: var(--ink); font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .dog-info { padding: 20px 20px 18px; }
+    .dog-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .dog-heading h3 { margin: 0; font: 600 25px var(--serif); }
+    .dog-age { color: var(--muted); font-size: 11px; }
+    .dog-description { min-height: 42px; margin-bottom: 18px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .dog-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; }
+    .dog-size { color: var(--forest); font-size: 11px; font-weight: 700; }
+    .details-button { display: inline-flex; align-items: center; gap: 6px; border: 0; padding: 5px 0 5px 8px; background: transparent; color: var(--coral); cursor: pointer; font-size: 12px; font-weight: 700; }
+    .details-button:hover { color: #bc4c35; }
+    .empty-state { grid-column: 1 / -1; padding: 45px 20px; color: var(--muted); text-align: center; }
+
+    .promise { display: grid; grid-template-columns: 1fr 1fr; min-height: 335px; background: var(--forest); color: white; }
+    .promise-image { min-height: 335px; background: url("https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80") center / cover no-repeat; }
+    .promise-copy { display: flex; flex-direction: column; justify-content: center; padding: 55px clamp(28px, 7vw, 100px); }
+    .promise-copy .eyebrow { color: var(--yellow); }
+    .promise-copy h2 { max-width: 420px; margin-bottom: 15px; font: 600 clamp(30px, 3.5vw, 43px)/1.12 var(--serif); }
+    .promise-copy p:last-child { max-width: 430px; margin-bottom: 0; color: #ffffffbe; font-size: 13px; line-height: 1.8; }
+
+    .footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 28px clamp(22px, 6vw, 88px); background: #102d25; color: #ffffffc2; font-size: 11px; }
+    .footer strong { color: white; }
+    .footer a { color: var(--yellow); text-decoration: none; }
+
+    dialog { width: min(480px, calc(100% - 32px)); max-height: min(85vh, 700px); overflow: auto; border: 0; border-radius: 4px; padding: 0; background: var(--white); color: var(--ink); box-shadow: 0 24px 80px #102d2540; }
+    dialog::backdrop { background: #102d25b8; backdrop-filter: blur(3px); }
+    .dialog-image { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #d8d5ca; }
+    .dialog-content { padding: 24px; }
+    .dialog-content .eyebrow { margin-bottom: 8px; color: var(--coral); }
+    .dialog-content h2 { margin-bottom: 10px; font: 600 32px var(--serif); }
+    .dialog-content p { color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .dialog-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
+    .close-button { min-height: 44px; border: 1px solid var(--line); border-radius: 3px; padding: 0 16px; background: transparent; color: var(--ink); cursor: pointer; font-size: 12px; font-weight: 600; }
+
+    @keyframes arrive { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 760px) {
+      .hero { min-height: 650px; min-height: 85svh; padding-right: 24px; padding-left: 24px; background-position: 60% center; }
+      .hero::before { background: linear-gradient(90deg, #102c25df, #102c2580 80%, #102c2540); }
+      .hero h1 { font-size: clamp(45px, 12vw, 62px); }
+      .hero-note { display: flex; margin: 18px 0 0; }
+      .intro { grid-template-columns: 1fr; gap: 20px; padding: 68px 24px 42px; }
+      .dogs { padding: 10px 24px 70px; }
+      .dog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .dog-info { padding: 15px; }
+      .dog-heading { display: block; }
+      .dog-age { display: block; margin-top: 3px; }
+      .dog-description { min-height: 60px; }
+      .promise { grid-template-columns: 1fr; }
+      .promise-image { min-height: 260px; }
+      .promise-copy { padding: 42px 24px 48px; }
+    }
+    @media (max-width: 480px) {
+      .topbar { padding: 20px 18px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .open-status { font-size: 10px; }
+      .hero { min-height: 620px; }
+      .hero-content { padding-top: 28px; }
+      .hero-copy { font-size: 14px; }
+      .dog-grid { grid-template-columns: 1fr; }
+      .dog-card { display: grid; grid-template-columns: 42% 58%; }
+      .dog-image-wrap { min-height: 100%; aspect-ratio: auto; }
+      .dog-info { display: flex; flex-direction: column; justify-content: center; padding: 14px; }
+      .dog-heading h3 { font-size: 22px; }
+      .dog-description { min-height: 0; margin: 8px 0 12px; font-size: 11px; }
+      .dog-footer { gap: 6px; }
+      .dog-size, .details-button { font-size: 10px; }
+      .footer { flex-direction: column; align-items: flex-start; padding: 24px; }
+      .filters { gap: 2px; }
+      .filter { padding: 0 9px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" aria-label="Les Jours Heureux">
+      <span class="brand-mark" aria-hidden="true">&#9829;</span>
+      <span class="brand-name">LES JOURS HEUREUX</span>
+    </div>
+    <span class="open-status">Le refuge est ouvert</span>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-content">
+        <p class="eyebrow">Refuge indépendant · Depuis 2014</p>
+        <h1 id="hero-title">La plus belle histoire commence ici.</h1>
+        <p class="hero-copy">Ils ont chacun leur petit caractère, leurs habitudes et beaucoup d’amour à donner. Il ne leur manque que vous.</p>
+        <a class="button" href="mailto:bonjour@lesjoursheureux.fr?subject=Rencontre%20avec%20un%20chien">Rencontrer nos chiens <span aria-hidden="true">&rarr;</span></a>
+        <p class="hero-note"><span aria-hidden="true">&#10022;</span> Adoption accompagnée, pour la vie.</p>
+      </div>
+    </section>
+
+    <section class="intro" aria-labelledby="intro-title">
+      <div>
+        <p class="eyebrow">Leur prochain chapitre</p>
+        <h2 id="intro-title">Des museaux à rencontrer.</h2>
+      </div>
+      <p class="intro-copy">Tous nos chiens sont suivis par notre équipe, vaccinés et identifiés. Prenez le temps de découvrir leur personnalité : la bonne rencontre, ça se ressent.</p>
+    </section>
+
+    <section class="dogs" aria-labelledby="dogs-title">
+      <div class="dogs-toolbar">
+        <h2 id="dogs-title">En attente d’une famille <span id="dog-count">(3)</span></h2>
+        <div class="filters" role="group" aria-label="Filtrer les chiens par taille">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">Tous</button>
+          <button class="filter" type="button" data-filter="petit" aria-pressed="false">Petits</button>
+          <button class="filter" type="button" data-filter="moyen" aria-pressed="false">Moyens</button>
+          <button class="filter" type="button" data-filter="grand" aria-pressed="false">Grands</button>
+        </div>
+      </div>
+      <div class="dog-grid" id="dog-grid">
+        <article class="dog-card" data-size="grand" data-name="oscar" data-age="4 ans" data-description="Oscar est un grand tendre qui adore les longues balades et les siestes au soleil. Il prend confiance à son rythme et rêve d’un foyer calme avec un jardin.">
+          <div class="dog-image-wrap">
+            <img class="dog-image" src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=80" alt="Oscar, un golden retriever au pelage doré" loading="lazy">
+            <span class="dog-tag">Coup de cœur</span>
+          </div>
+          <div class="dog-info">
+            <div class="dog-heading"><h3>Oscar</h3><span class="dog-age">4 ans</span></div>
+            <p class="dog-description">Un grand tendre, fan de balades et de siestes au soleil.</p>
+            <div class="dog-footer"><span class="dog-size">Grand · 28 kg</span><button class="details-button" type="button">Son histoire <span aria-hidden="true">&rarr;</span></button></div>
+          </div>
+        </article>
+
+        <article class="dog-card" data-size="petit" data-name="lila" data-age="2 ans" data-description="Lila est une petite exploratrice vive et curieuse. Elle aime apprendre, jouer et se blottir près des gens qu’elle connaît. Elle serait heureuse dans un foyer prêt à partager de jolies promenades.">
+          <div class="dog-image-wrap">
+            <img class="dog-image" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=80" alt="Lila, un petit chien attentif" loading="lazy">
+            <span class="dog-tag">Petite exploratrice</span>
+          </div>
+          <div class="dog-info">
+            <div class="dog-heading"><h3>Lila</h3><span class="dog-age">2 ans</span></div>
+            <p class="dog-description">Curieuse et vive, toujours partante pour découvrir le monde.</p>
+            <div class="dog-footer"><span class="dog-size">Petit · 8 kg</span><button class="details-button" type="button">Son histoire <span aria-hidden="true">&rarr;</span></button></div>
+          </div>
+        </article>
+
+        <article class="dog-card" data-size="moyen" data-name="basil" data-age="6 ans" data-description="Basil est un compagnon posé, sociable et très gourmand. Il apprécie les promenades tranquilles et les moments partagés. Il cherche une famille présente qui lui laissera le temps de prendre ses marques.">
+          <div class="dog-image-wrap">
+            <img class="dog-image" src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&q=80" alt="Basil en promenade avec un autre chien" loading="lazy">
+            <span class="dog-tag">Cœur tranquille</span>
+          </div>
+          <div class="dog-info">
+            <div class="dog-heading"><h3>Basil</h3><span class="dog-age">6 ans</span></div>
+            <p class="dog-description">Un compagnon posé qui ne dit jamais non à une balade.</p>
+            <div class="dog-footer"><span class="dog-size">Moyen · 17 kg</span><button class="details-button" type="button">Son histoire <span aria-hidden="true">&rarr;</span></button></div>
+          </div>
+        </article>
+        <p class="empty-state" id="empty-state" hidden>Aucun chien de cette taille pour le moment. Essayez une autre sélection.</p>
+      </div>
+    </section>
+
+    <section class="promise" aria-labelledby="promise-title">
+      <div class="promise-image" role="img" aria-label="Deux chiens profitent d’une promenade ensemble"></div>
+      <div class="promise-copy">
+        <p class="eyebrow">Une rencontre, pas un clic</p>
+        <h2 id="promise-title">On prend le temps de bien faire.</h2>
+        <p>Une première visite, une balade ensemble, puis un échange avec notre équipe. On vous accompagne avant, pendant et après l’adoption, sans jamais vous presser.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span><strong>Les Jours Heureux</strong> · Refuge pour chiens</span>
+    <span>Ouvert du mardi au dimanche · 10h–18h</span>
+    <a href="mailto:bonjour@lesjoursheureux.fr">bonjour@lesjoursheureux.fr</a>
+  </footer>
+
+  <dialog id="dog-dialog" aria-labelledby="dialog-title">
+    <img class="dialog-image" id="dialog-image" src="" alt="">
+    <div class="dialog-content">
+      <p class="eyebrow">Un compagnon à rencontrer</p>
+      <h2 id="dialog-title"></h2>
+      <p id="dialog-description"></p>
+      <div class="dialog-actions">
+        <button class="close-button" id="close-dialog" type="button">Fermer</button>
+        <a class="button" id="contact-link" href="mailto:bonjour@lesjoursheureux.fr">Organiser une rencontre <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const filterButtons = document.querySelectorAll(".filter");
+    const dogCards = document.querySelectorAll(".dog-card");
+    const dogCount = document.querySelector("#dog-count");
+    const emptyState = document.querySelector("#empty-state");
+    const dogDialog = document.querySelector("#dog-dialog");
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedSize = button.dataset.filter;
+        let visibleCount = 0;
+
+        filterButtons.forEach((filter) => filter.setAttribute("aria-pressed", String(filter === button)));
+        dogCards.forEach((card) => {
+          const matches = selectedSize === "all" || card.dataset.size === selectedSize;
+          card.hidden = !matches;
+          if (matches) visibleCount += 1;
+        });
+        dogCount.textContent = `(${visibleCount})`;
+        emptyState.hidden = visibleCount > 0;
+      });
+    });
+
+    dogCards.forEach((card) => {
+      card.querySelector(".details-button").addEventListener("click", () => {
+        const name = card.dataset.name;
+        const image = card.querySelector(".dog-image");
+        document.querySelector("#dialog-title").textContent = `${name}, ${card.dataset.age}`;
+        document.querySelector("#dialog-description").textContent = card.dataset.description;
+        document.querySelector("#dialog-image").src = image.src;
+        document.querySelector("#dialog-image").alt = image.alt;
+        document.querySelector("#contact-link").href = `mailto:bonjour@lesjoursheureux.fr?subject=${encodeURIComponent(`Rencontrer ${name}`)}`;
+        dogDialog.showModal();
+      });
+    });
+
+    document.querySelector("#close-dialog").addEventListener("click", () => dogDialog.close());
+    dogDialog.addEventListener("click", (event) => {
+      if (event.target === dogDialog) dogDialog.close();
+    });
+  </script>
+</body>
+</html>
